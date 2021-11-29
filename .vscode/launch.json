@@ -6,16 +6,31 @@
     "configurations": [
         {
             "type": "java",
-            "name": "Launch Current File",
+            "name": "Launch Main_server",
             "request": "launch",
-            "mainClass": "${file}"
+            "mainClass": "com.example.Main_server",
+            "projectName": "demo"
+        },
+        {
+            "type": "java",
+            "name": "Launch Main_class",
+            "request": "launch",
+            "mainClass": "com.example.Main_class",
+            "projectName": "demo"
         },
         {
             "type": "java",
             "name": "Launch App",
             "request": "launch",
-            "mainClass": "com.example.App",
-            "projectName": "demo"
+            "mainClass": "com.example.Main_server",
+            "projectName": "compito"
+        },
+        {
+            "type": "java",
+            "name": "Launch App",
+            "request": "launch",
+            "mainClass": "com.example.Main_client",
+            "projectName": "compito"
         }
     ]
 }

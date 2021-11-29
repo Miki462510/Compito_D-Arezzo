@@ -11,6 +11,8 @@ public class Server {
     Socket servSocket;
     BufferedReader in;
     DataOutputStream out;
+    boolean alive = true;
+
     public Socket attendi() {
         try {
             //creo il server sulla porta ****
@@ -20,9 +22,6 @@ public class Server {
             //accetto eventuale connessione da parte del client
             servSocket = server.accept();
             System.out.println("Client connesso con successo! ");
-
-            //chiudo la connessione per evitare altre connessioni
-            server.close();
 
             //inizializzo gli stream per consentire la comunicazione
             out = new DataOutputStream(servSocket.getOutputStream());
@@ -39,42 +38,68 @@ public class Server {
 
     public void calcola(){
         try{
-            double x;
-            double y;
-            double risultato=0;
+            String x;
+            String y;
+            String risultato;
             //leggo la scelta e in base a quella eseguo le operazioni
             String scelta = in.readLine();
-
+            for(;;){
             //accetto prima i numeri
-            x = in.read();
+
+            x = in.readLine();
 
             System.out.println("x "+x);
-            y = in.read();
+            y = in.readLine();
             System.out.println("y "+y);
+            risultato = in.readLine();
+            double xop = Double.parseDouble(x);
+            double yop = Double.parseDouble(y);
+            double rop = Double.parseDouble(risultato);
 
             switch (scelta){
                 case "+":
                     System.out.println("Scelta: "+scelta);
                     //somma
-                    risultato = x+y;
+                    rop = xop+yop;
+                    String rfp=Double.toString(rop); 
+                    out.writeBytes(rfp);
                 case "-":
                     System.out.println("Scelta: "+scelta);
                     //sottrazione
-                    risultato = x-y;
+                    rop = xop-yop;
+                    String rfs=Double.toString(rop); 
+                    out.writeBytes(rfs);
                 case "*":
                     System.out.println("Scelta: "+scelta);
                     //moltiplicazione
-                    risultato = x*y;
+                    rop = xop*yop;
+                    String rfm=Double.toString(rop); 
+                    out.writeBytes(rfm);
                 case "/":
                     System.out.println("Scelta: "+scelta);
                     //divisione
-                    risultato = x/y;
+                    rop = xop/yop;
+                    String rfd=Double.toString(rop); 
+                    out.writeBytes(rfd);
+                case "x":
+                disconnessione();
+                break;
 
-            }
-            System.out.println("Risultato: "+risultato);
+            };
+            
+        }
 
         }catch (Exception e){
 
+        }
+    }
+    public void disconnessione(){
+        try{
+            alive=false;
+            servSocket.close();
+            server.close();
+        }catch(Exception e){
+            e.printStackTrace();
         }
     }
 }

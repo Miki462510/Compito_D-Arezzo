@@ -7,6 +7,8 @@ public class Client {
     String nomeServer = "localhost"; //il nome
     int portaServer= 6789; //la porta
     Socket socket;
+    double risultato_op = 0;
+    String risultato_opf;
     BufferedReader in; //stream input
     DataOutputStream out; //stream output
 
@@ -36,7 +38,7 @@ public class Client {
         try{
             System.out.println("---Calcolatrice---");
             System.out.println("+ \t -\t * \t /");
-            System.out.println("x.ESCI");
+            System.out.println("x, per uscire");
         } catch (Exception e){
             System.out.println("Errore");
         }
@@ -47,29 +49,35 @@ public class Client {
     //funzione per comunicare
     public void comunica(){
         try {
-            String scelta = ".";
-            do{
+            for(;;){
+            String scelta = "";
                 menu();
                 System.out.println("Inserire operazione ");
                 scelta = input.nextLine();
                 //invio la scelta al server
-                out.writeBytes(scelta);;
-
+                out.writeBytes(scelta);
                 //Inserisco i numeri e li spedisco al server
                 System.out.println("Inserisci primo numero.");
                 double x = input.nextDouble();
-                out.writeDouble(x);
-
+                String xs=Double.toString(x);  
+                out.writeBytes(xs);
                 System.out.println("Inserisci secondo numero.");
                 double y = input.nextDouble();
-                out.writeDouble(y);
-
+                String ys=Double.toString(y);  
+                out.writeBytes(ys);
+                System.out.println("Risultato");
+                String rs=Double.toString(risultato_op); 
+                out.writeBytes(rs);
+                risultato_opf=in.readLine();
+                if (scelta.equals("x")){
+                    System.out.println("Calcolatrice in chiusura");
+                    socket.close();
+                    break;
+                }
             }
-            while(scelta != "x");
-        }catch (IOException e){
 
+        }catch (Exception e){
+            e.printStackTrace();
         }
-
-
     }
 }
